@@ -19,7 +19,3 @@ Route::controller(AuthController::class)->group(function () {
 
     Route::get('/logout', 'logout')->name('logout');
 });
-
-Route::get('/home', function() {
-    return view('home');
-})->middleware('auth');
