@@ -1,0 +1,69 @@
+<svg
+  version="1.1"
+  id="laravel-pix-logo"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="300"
+  height="300"
+  viewBox="0 0 300 300">
+
+  <!-- Definições de gradientes -->
+  <defs>
+    <!-- Gradiente multicolorido para o L principal -->
+    <linearGradient id="gradient-l" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#FF2D20" />
+      <stop offset="30%"  stop-color="#FF8C00" />
+      <stop offset="70%"  stop-color="#FFD700" />
+      <stop offset="100%" stop-color="#FF6B5A" />
+    </linearGradient>
+
+    <!-- Gradiente para o diamante “Pix” -->
+    <linearGradient id="gradient-pix" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#22D3EE" />
+      <stop offset="50%"  stop-color="#14B8A6" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+
+    <!-- Sombras suaves (filtro opcional) -->
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+      <feOffset in="blur" dx="2" dy="4" result="offsetBlur"/>
+      <feMerge>
+        <feMergeNode in="offsetBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Forma principal (remete ao “L” do Laravel) -->
+  <path 
+    d="M80,50 
+       L80,200 
+       A20,20 0 0,0 100,220 
+       L160,220
+       A20,20 0 0,0 180,200 
+       L180,130
+       L140,90
+       L140,50Z"
+    fill="url(#gradient-l)" 
+    filter="url(#dropShadow)" />
+
+  <!-- Diamante que simboliza o “Pix” -->
+  <polygon 
+    points="140,90 180,130 140,170 100,130"
+    fill="url(#gradient-pix)"
+    filter="url(#dropShadow)" />
+
+  <!-- Texto do logo -->
+  <text 
+    x="50%"
+    y="270"
+    font-family="Arial, sans-serif"
+    font-size="32"
+    fill="#333"
+    text-anchor="middle"
+    style="font-weight: bold;"
+  >
+    Laravel Pix
+  </text>
+</svg>
