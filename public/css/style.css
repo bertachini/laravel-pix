@@ -1,5 +1,5 @@
 body{
-    background-color: #141414  ;
+    background-color: #141414  !important;
 }
 
 * {
@@ -55,4 +55,20 @@ body{
 
   .logo img{
     height: 60px;
+  }
+
+  .container{
+    background-color: transparent !important;
+  }
+
+  .resgistro{
+    width: 400px !important;
+  }
+
+  .form-center{
+    width: 100%;
+    height: calc(100% - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
