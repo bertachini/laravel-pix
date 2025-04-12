@@ -40,7 +40,10 @@ class AuthController extends Controller
         $user->password = $req->senha;
         $user->save();
 
-        session()->flash('mensagem', 'Usuário registrado com sucesso!');
+        session()->flash('message', [
+            'type' => 'success',
+            'text' => 'Usuário registrado com sucesso!'
+        ]);
 
         return redirect(route('login'));
     }

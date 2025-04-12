@@ -1,74 +1,112 @@
-body{
-    background-color: #141414  !important;
+body {
+    background-color: #141414 !important;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
+}
 
-  body {
+body {
     font-family: Arial, sans-serif;
-  }
+}
 
-  /* Navbar container */
-  .navbar {
-    display: flex;
-    justify-content: space-between;  /* Espaço entre logo e ícone de usuário */
-    align-items: center;
+/* Navbar container */
+.navbar {
     padding: 0 20px;
     height: 80px;
-    background-color: #232323    ;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 2px 5px rgba(0, 0, 0, 0.2);
+}
 
-  /* Logo (pode ser imagem ou texto) */
-  .navbar .logo {
+.logo img {
+    height: 55px;
+    width: 55px;
+}
+.logo a {
     display: flex;
     align-items: center;
-  }
-  .logo label{
-    font-size: 30px;
-    color: #fff;
+    font-size: 24px;
     font-weight: bold;
-  }
+}
 
-  /* Container do ícone de usuário */
-  .navbar .user-icon {
+/**
+  * Navbar links
+  */
+.nav-bar {
+    display: flex;
+    width: calc(100% - 300px);
+    align-items: center;
+    height: 100%;
+}
+
+.nav-bar a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    height: 100%;
+    margin: 0 4px;
+}
+
+.nav-bar a:hover {
+    background-color: #333;
+    border-radius: 5px;
+}
+/**
+  * user
+  */
+.user {
     width: 55px;
     height: 55px;
-    border-radius: 50%;
-    background-color: #ddd; /* cor de fundo do círculo */
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer; /* ponteiro para interação */
-  }
+}
+.user img {
+    border: 3px solid #ff600d;
+    border-radius: 50%;
+}
+.user:hover {
+    transform: scale(0.9);
+    transition: 100ms;
+}
+.user a {
+    text-decoration: none;
+    color: #ff600d;
+    font-size: 28px;
+}
 
-  /* Exemplo de ícone de usuário, pode ser uma letra ou imagem */
-  .navbar .user-icon::before {
-    content: 'U'; /* Placeholder de usuário */
-    font-weight: bold;
-    color: #555;
-  }
+/**
+ * notofication
+ */
 
-  .logo img{
-    height: 60px;
-  }
+.notify {
+    z-index: 1;
+    position: absolute;
+    top: 90px;
+    right: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.toast {
+    display: block !important;
+}
 
-  .container{
+.container {
     background-color: transparent !important;
-  }
+}
 
-  .resgistro{
+.resgistro {
     width: 400px !important;
-  }
+}
 
-  .form-center{
+.form-center {
     width: 100%;
     height: calc(100% - 80px);
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}

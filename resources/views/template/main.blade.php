@@ -2,24 +2,40 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <title>Laravel Pix </title>
-
+        <link rel="icon" href="{{asset('img/laravel.svg')}}" type="image/x-icon">
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     </head>
     <body class="">
-        <nav class="navbar">
-            <div class="logo">
-                <img src="{{asset('img/laravel.svg')}}" alt="Logo">
-                <Label>Laravel Pix </Label>
+        <div class="notify" id="notify" ></div>
+        <nav class="navbar navbar-dark bg-dark display-flex ">
+            <div class="container-fluid logo">
+                <a class="navbar-brand" href="/">
+                    <img src="{{asset('img/laravel.svg')}}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                    Laravel Pix 
+                </a>
+                <div class="d-flex nav-bar">
+                    @yield('nav')
+                </div>
+                <div class="user">
+                    @yield('user')
+                </div>
             </div>
-            <div class="user-icon" title="Usuário Logado"></div>
         </nav>
         <div class="container">
                 @yield('content')
         </div>
-        </body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+        <script src="{{asset('js/notify.js')}}"></script>
+        <script>
+            @if (session('message'))
+                addNotify("{{ session('message')['text'] }}", "{{ session('message')['type'] }}");
+            @endif
+        </script>   
+    </body>
 </html>
