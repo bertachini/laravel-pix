@@ -1,7 +1,7 @@
 @extends('template.main')
 @section('content')
 <div class="form-center">
-    <form action="" method="post" class="resgistro form-control form-control-sm p-3">
+    <form action="{{ route('save.register') }}" method="post" class="resgistro form-control form-control-sm p-3">
         @csrf
         <h1 class="text-center">Registro</h1>
         <label for="name" class="form-label mt-4">Nome completo</label>

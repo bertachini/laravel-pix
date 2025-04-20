@@ -2,7 +2,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Laravel Pix </title>
+        @yield('title')
         <link rel="icon" href="{{asset('img/laravel.svg')}}" type="image/x-icon">
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -33,9 +33,20 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
         <script src="{{asset('js/notify.js')}}"></script>
         <script>
-            @if (session('message'))
-                addNotify("{{ session('message')['text'] }}", "{{ session('message')['type'] }}");
+            let notify;
+            @if (session('notify'))
+                notify = @php echo json_encode(session('notify')); @endphp;
+                console.log(notify);
+                if (notify.length > 1){
+                    notify.map((item) => {
+                        addNotify(item.type, item.message);
+                    });
+                }else{
+                    addNotify(notify.type, notify.message);
+                }    
+                
             @endif
+    
         </script>   
     </body>
 </html>

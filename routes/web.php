@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\AuthController;
 
-Route::get('/', function () {
-})->name('login');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'login')->name('login');

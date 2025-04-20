@@ -1,4 +1,4 @@
-function addNotify(message, type) {
+function addNotify(type, message) {
     console.log(message, type);
     // Create a div element for the notification
     var notifyDiv = $(`
