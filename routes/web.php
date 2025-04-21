@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\ClientController;
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -42,3 +43,8 @@ Route::controller(CityController::class)->group(function () {
     Route::post('/cities/new', 'saveCity')->name('cities.save');
 });
 
+Route::controller(ClientController::class)->group(function () {
+    Route::get('/clients', 'clients')->name('clients.get');
+    Route::get('/clients/new', 'newClient')->name('clients.new');
+    Route::post('/clients/new', 'saveClient')->name('clients.save');
+});
