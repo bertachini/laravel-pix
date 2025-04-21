@@ -110,3 +110,16 @@ body {
     justify-content: center;
     align-items: center;
 }
+.transaction-form,
+.company-forms {
+    width: 600px !important;
+}
+
+/*
+ * Form images
+ */
+
+.form-center img {
+    width: 150px;
+    height: 150px;
+}

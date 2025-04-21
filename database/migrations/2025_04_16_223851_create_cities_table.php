@@ -10,6 +10,8 @@ class CreateCitiesTable extends Migration
         Schema::create('cities', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name')->unique();
+            $table->string('state');
+            $table->string('country');
             $table->timestamps();
         });
     }
