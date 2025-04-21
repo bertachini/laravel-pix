@@ -1,10 +1,12 @@
-@extends('template.main')
+@extends('template.fullpainel')
 @section('content')
 <div class="form-center">
-    <form action="{{ route('transactions.save') }}" method="post" class="resgistro-transctiosn form-control form-control-sm p-3">
+    <form action="{{ route('transactions.save') }}" method="post" class="transaction-form form-control form-control-sm p-3">
         @csrf
-        <h1 class="text-center">Registrar transação</h1>
-
+        <div class="text-center mb-1 mt-3">
+            <img src="{{ asset('img/icon/transaction.png') }}" alt="Logo" class="logo">
+        </div>
+        <h4 class="text-center">Registrar transação</h4>
         <div class="mb-3">
             <label for="paternerCompany" class="form-label">Empresa parceira</label>
             <select class="form-select" aria-label="Default select example" id="paternerCompany" name="partner_company_id" required>
@@ -27,7 +29,7 @@
             <label for="amount" class="form-label">Valor</label>
             <input type="number" class="form-control" id="amount" name="amount" required>
         </div>
-        <input type="submit" class="btn btn-primary" value="Registrar">
+        <input type="submit" class="btn btn-success mt-4 form-control" value="Cadastrar"></button>
     </form>
 </div>
 @endsection

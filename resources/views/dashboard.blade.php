@@ -1,20 +1,7 @@
-@extends('template.main')
+@extends('template.fullpainel')
 
 @section('title')
 <title>Dashboard</title>
-@endsection
-
-@section('nav')
-
-<a class="nav-link active" aria-current="page" href="/">Home</a>
-<a class="nav-link" href="/conta">Conta</a>
-<a class="nav-link" href="/transacao">Transação</a>
-
-@endsection
-
-
-@section('user')
-<img src="https://ui-avatars.com/api/?name={{session('username')}}&background=212529&color=ffd100&rounded=true&format=svg&size=96" alt="User" class="user-icon">
 @endsection
 
 

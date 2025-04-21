@@ -14,5 +14,22 @@ class Client extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+    protected $fillable = [
+        'name',
+        'cpf',
+        'phone',
+        'email',
+        'password',
+        'account_number',
+        'balance',
+        'city_id',
+    ];
+
+    function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+
   
 }

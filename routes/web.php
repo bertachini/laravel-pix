@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\ClientController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -29,5 +32,23 @@ Route::controller(TransactionsController::class)->group(function () {
     Route::get('/transactions/new', 'newTransiction')->name('transactions.new');
     Route::post('/transactions/new', 'saveTransiction')->name('transactions.save');
     Route::get('/transactions', 'getTransiction')->name('transactions.get');
+});
 
+Route::controller(CompanyController::class)->group(function () {
+    Route::get('/company/new', 'newPartnerCompany')->name('company.new');
+    Route::post('/company/new', 'savePartnerCompany')->name('company.save');
+    Route::get('/company', 'getPartnerCompany')->name('company.get');
+});
+
+
+Route::controller(CityController::class)->group(function () {
+    Route::get('/cities', 'index')->name('cities.get');
+    Route::get('/cities/new', 'newCity')->name('cities.new');
+    Route::post('/cities/new', 'saveCity')->name('cities.save');
+});
+
+Route::controller(ClientController::class)->group(function () {
+    Route::get('/clients', 'clients')->name('clients.get');
+    Route::get('/clients/new', 'newClient')->name('clients.new');
+    Route::post('/clients/new', 'saveClient')->name('clients.save');
 });
