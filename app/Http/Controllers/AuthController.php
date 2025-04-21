@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\AuthRequest;
+use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
@@ -25,16 +25,10 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard')->with('notify', [
-                'type' => 'success',
-                'message' => 'Bem-vindo, ' . Auth::user()->name . '!',
-            ]);
+            return redirect()->route('dashboard')->with('success', 'Bem-vindo, ' . Auth::user()->name . '!');
         }
 
-        return back()->with('notify', [
-            'type' => 'danger',
-            'message' => 'Email ou senha inválidos',
-        ]);
+        return back()->with('error', 'Email ou senha inválidos');
     }
 
     public function register()
@@ -43,7 +37,7 @@ class AuthController extends Controller
 
     }
 
-    public function processRegister(AuthRequest $request)
+    public function processRegister(RegisterRequest $request)
     {
         $user = User::create([
             'name' => $request->name,
@@ -55,11 +49,13 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('dashboard')->with('notify', [
-            'type' => 'success',
-            'message' => 'Cadastro realizado com sucesso, bem-vindo!',
-        ]);
+        return redirect()->route('dashboard')->with('success', 'Cadastro realizado com sucesso, bem-vindo!');
     }
 
-    public function logout() {}
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login')->with('success', 'Logout realizado com sucesso!');
+    }
+
 }
