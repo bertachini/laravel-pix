@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\AuthRequest;
 
 class AuthController extends Controller
@@ -15,22 +16,25 @@ class AuthController extends Controller
 
     }
 
-    public function tryLogin(Request $req)
+    public function processLogin(Request $request)
     {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        $credenciais = ['email' => $req->email, 'password' => $req->senha];
-
-
-
-        if(Auth::attempt($credenciais)) {
-            session()->put('username',Auth::user()->name);
-            return redirect(route('dashboard'));
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('dashboard')->with('notify', [
+                'type' => 'success',
+                'message' => 'Bem-vindo, ' . Auth::user()->name . '!',
+            ]);
         }
 
-
-        session()->flash('mensagem', [
+        return back()->with('notify', [
             'type' => 'danger',
-            'message' => 'Email ou senha inválidos']);
+            'message' => 'Email ou senha inválidos',
+        ]);
     }
 
     public function register()
@@ -39,33 +43,22 @@ class AuthController extends Controller
 
     }
 
-    public function saveRegister(AuthRequest $req)
+    public function processRegister(AuthRequest $request)
     {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => 'normal',
+        ]);
 
-        $user = User::where('email', $req->email)->first();
-        if($user) {
-            return redirect()
-                ->back()
-                ->with('notify', [
-                    'type' => 'warning',
-                    'message' => 'Este email já está cadastrado'
-                ]);
-        }
+        Auth::login($user);
+        $request->session()->regenerate();
 
-        $user = new User;
-        $user->name = $req->name;
-        $user->email = $req->email;
-        $user->password = $req->senha;
-        $user->save();
-
-        return redirect()
-            ->route('login')
-            ->with('notify', [
-                'type' => 'success',
-                'message' => 'Usuário cadastrado com sucesso!'
-            ]);
-
-        
+        return redirect()->route('dashboard')->with('notify', [
+            'type' => 'success',
+            'message' => 'Cadastro realizado com sucesso, bem-vindo!',
+        ]);
     }
 
     public function logout() {}

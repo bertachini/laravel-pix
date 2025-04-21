@@ -16,7 +16,7 @@
             <div class="container-fluid logo">
                 <a class="navbar-brand" href="/">
                     <img src="{{asset('img/laravel.svg')}}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                    Laravel Pix 
+                    Caçapay
                 </a>
                 <div class="d-flex nav-bar">
                     @yield('nav')
@@ -30,7 +30,7 @@
                 @yield('content')
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{asset('js/notify.js')}}"></script>
         <script>
             let notify;
@@ -43,10 +43,10 @@
                     });
                 }else{
                     addNotify(notify.type, notify.message);
-                }    
-                
+                }
+
             @endif
-    
-        </script>   
+
+        </script>
     </body>
 </html>
