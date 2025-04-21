@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TransactionsController;
 
+Route::get('/', function () {
+    return view('dashboard');
+})->name('index')->middleware('auth');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
