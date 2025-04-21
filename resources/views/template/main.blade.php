@@ -41,9 +41,26 @@
             @endif
             @yield('content')
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
-                crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+        <script src="{{asset('js/notify.js')}}"></script>
+        <script >
+            let notify;
+            @if (session('notify'))
+                notify = @php echo json_encode(session('notify')); @endphp;
+                console.log(notify);
+                if (notify.length > 1){
+                    notify.map((item) => {
+                        addNotify(item.type, item.message);
+                    });
+                }else{
+                    addNotify(notify.type, notify.message);
+                }    
+                
+            @endif
+    
+        </script>
+         @stack('scripts')
     </body>
 </html>

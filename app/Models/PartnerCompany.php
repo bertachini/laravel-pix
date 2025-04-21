@@ -13,6 +13,15 @@ class PartnerCompany extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+    protected $fillable = [
+        'company_name',
+        'cnpj',
+        'phone',
+        'email',
+        'access_token',
+        'balance',
+    ];
+
     
 
 }

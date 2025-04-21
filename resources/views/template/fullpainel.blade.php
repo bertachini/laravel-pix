@@ -6,9 +6,10 @@
 
 @section('nav')
 <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
-<a class="nav-link" href="/clients">Clientes</a>
-<a class="nav-link" href="/company">Companias</a>
-<a class="nav-link" href="/transactions">Transações</a>
+<a class="nav-link" href="{{route('clients.get')}}">Clientes</a>
+<a class="nav-link" href="{{route('company.get')}}">Companias</a>
+<a class="nav-link" href="{{route('transactions.get')}}">Transações</a>
+<a class="nav-link" href="{{ route('cities.get') }}">Cidades</a>
 @endsection
 
 @section('user')
@@ -18,3 +19,7 @@
 @section('content')
  @yield('content')
 @endsection
+
+@push('scripts')
+    @stack('painel-scripts')
+@endpush
