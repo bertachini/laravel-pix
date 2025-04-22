@@ -32,6 +32,9 @@ Route::controller(TransactionsController::class)->group(function () {
     Route::get('/transactions/new', 'newTransiction')->name('transactions.new');
     Route::post('/transactions/new', 'saveTransiction')->name('transactions.save');
     Route::get('/transactions', 'getTransiction')->name('transactions.get');
+    Route::get('/transactions/{id}', 'getTransictionById')->name('transactions.getById');
+    Route::get('/transactions/approve/{id}', 'approveTransiction')->name('transactions.approve');
+    Route::get('/transactions/reject/{id}', 'rejectTransiction')->name('transactions.reject');
 });
 
 Route::controller(CompanyController::class)->group(function () {

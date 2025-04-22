@@ -123,3 +123,111 @@ body {
     width: 150px;
     height: 150px;
 }
+
+/***/
+.transacao-card {
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px 25px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transacao-card:hover {
+    transform: scale(1.01);
+}
+
+.transacao-info {
+    width: 380px;
+}
+
+.transacao-info .label {
+    font-size: 14px;
+    color: #aaa;
+    font-weight: bold;
+}
+
+.transacao-info .valor {
+    font-size: 18px;
+    color: #fff;
+}
+
+.status {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.card-secondary {
+    color: #fff !important;
+}
+.card-secondary .valor {
+    font-size: 14px;
+}
+.card-secondary .label {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.amount {
+    width: 140px;
+}
+.pagador {
+    width: 260px;
+}
+.recebedor {
+    width: 260px;
+}
+
+.card-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+}
+
+.transacao-acoes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 91px;
+}
+
+.btn-reprovar,
+.btn-aprovar {
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.status-pending {
+    background-color: orange;
+    color: #1e1e1e;
+}
+
+.status-approved {
+    background-color: #28a745;
+    color: #1e1e1e;
+}
+
+.status-rejected {
+    background-color: #dc3545;
+    color: #1e1e1e;
+}
+
+.btn-aprovar {
+    background-color: #28a745;
+}
+.btn-reprovar {
+    background-color: #dc3545;
+}
+
+/***/

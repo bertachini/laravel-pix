@@ -25,22 +25,23 @@ class TransactionsController extends Controller
         ]);
     }
 
+    
+
     public function saveTransiction(Request $req)
     {
         $uudiPennding = TransactionStatus::where('name', 'pending')->firstOrFail();
 
-        $transaction = new Transaction;
-        $transaction->date = now();
-        $transaction->partner_company_id = $req->partner_company_id;
-        $transaction->client_id = $req->client_id;
-        $transaction->amount = $req->amount;
-        $transaction->transaction_status_id = $uudiPennding->id;
-        $transaction->save();
 
-        return redirect(route('transactions.get'))->with('notify',[
-            'type' => 'success',
-            'message' => 'Transação criada com sucesso! com o ID: ' . $transaction->id
+        $transaction = Transaction::create([
+            'date' => now(),
+            'partner_company_id' => $req->partner_company_id,
+            'client_id' => $req->client_id,
+            'amount' => $req->amount,
+            'transaction_status_id' => $uudiPennding->id
         ]);
+       
+
+        return redirect(route('transactions.get'))->with('success', 'Transação criada com sucesso!');
     }
 
     public function getTransiction()
@@ -52,6 +53,42 @@ class TransactionsController extends Controller
         ]);
     }
 
+    public function getTransictionById($id)
+    {
+        $transaction = Transaction::where('partner_company_id', $id)->orWhere('client_id', $id)->get();
+        return view('transactions.index', [
+            'transactions' => $transaction
+        ]);
+    }
+
+    public function approveTransiction($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+        $recebedor = PartnerCompany::findOrFail($transaction->partner_company_id);
+        $pagador = Client::findOrFail($transaction->client_id);
+
+        if($pagador->balance < $transaction->amount){
+            return redirect(route('transactions.get'))->with('error', 'Saldo insuficiente para realizar a transação!');
+        }
+
+        $pagador->balance -= $transaction->amount;
+        $pagador->save();
+        $recebedor->balance += $transaction->amount;
+        $recebedor->save();
+        $transaction->transaction_status_id = TransactionStatus::where('name', 'approved')->first()->id;
+        $transaction->save();
+
+        return redirect(route('transactions.get'))->with('success', 'Transação aprovada com sucesso!');
+    }
+    public function rejectTransiction($id)
+    {
+        $transaction = Transaction::updateOrCreate(
+            ['id' => $id],
+            ['transaction_status_id' => TransactionStatus::where('name', 'rejected')->first()->id]
+        );
+
+        return redirect(route('transactions.get'))->with('success', 'Transação rejeitada com sucesso!');
+    }
 
 
 

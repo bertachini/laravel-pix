@@ -17,6 +17,15 @@ class Transaction extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+    protected $fillable = [
+        
+        'date',
+        'partner_company_id',
+        'client_id',
+        'amount',
+        'transaction_status_id'
+    ];
+
     function company()
     {
         return $this->belongsTo(PartnerCompany::class , 'partner_company_id');
