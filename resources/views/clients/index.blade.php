@@ -7,7 +7,7 @@
 @section('content')
 <div class="container">
     <div class="row mt-3">
-      <a href="{{ route('clients.new') }}" class="btn btn-primary">Nova Compania</a>
+      <a href="{{ route('clients.new') }}" class="btn btn-primary">Novo Cliente</a>
     </div>
     <div class="row mt-3">
       <table class="table table-striped table-hover">
