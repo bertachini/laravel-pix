@@ -4,6 +4,10 @@
  @yield('title')
 @endsection
 
+@section('css')
+ @yield('css')
+@endsection
+
 @section('nav')
 <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
 <a class="nav-link" href="{{route('clients.get')}}">Clientes</a>

@@ -1,0 +1,78 @@
+.companhia-card {
+    background-color: #1e1e1e;
+    border-radius: 16px;
+    margin-bottom: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    transition: 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    color: #fff;
+}
+
+.companhia-card img {
+    width: 200px;
+    background-color: #121212;
+    border-radius: 16px;
+}
+
+.companhia-card .box-infos {
+    display: flex;
+    width: calc(100% - 200px - 50px - 30px);
+    height: 200px;
+    flex-direction: column;
+}
+.companhia-card .box-infos * {
+    margin: 0;
+    padding: 0;
+}
+.box-infos .name_id {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.box-infos .infos {
+    padding-top: 10px;
+    display: flex;
+}
+.infos .box-1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 50%;
+    height: 140px;
+}
+.box-1 .valor {
+    font-size: 22px !important;
+}
+.box-1 .label {
+    font-size: 16px;
+    color: #a0a0a0;
+    font-weight: bold;
+}
+.companhia-card .box-actions {
+    display: flex;
+    flex-direction: column;
+    width: 50px;
+    height: 200px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.box-actions a {
+    font-size: 22px;
+    color: #a0a0a0;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.yellow {
+    color: #f0c674 !important;
+}
+.red {
+    color: #cc6666 !important;
+}
+.green {
+    color: #36c24d !important;
+}
