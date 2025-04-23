@@ -19,13 +19,12 @@
 
 @section('user')
 
-<!--
 <img src="https://ui-avatars.com/api/?name={{session('username')}}&background=212529&color=ffd100&rounded=true&format=svg&size=96" alt="User" class="user-icon">
 -->
 <form action="{{ route('logout') }}" method="POST" class="d-inline">
     @csrf
-    <button type="submit" style="color:white; font-size: 18px;" class="nav-link btn btn-link p-0" title="Logout">
-        <i class="bi bi-box-arrow-right  fs-5"></i>
+    <button type="submit" style="color:white; font-size: 18px;" class="btn" title="Logout">
+        <i class="bi bi-box-arrow-right fs-5"></i>
     </button>
 </form>
 @endsection

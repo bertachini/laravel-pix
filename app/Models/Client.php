@@ -2,34 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use \Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Traits\HasUuid;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Client extends Model
+class Client extends Authenticatable
 {
-    //
-    use HasFactory, HasUuid;
-    
-    public $incrementing = false;
-    protected $keyType = 'string';
+    use Notifiable;
 
     protected $fillable = [
-        'name',
-        'cpf',
-        'phone',
-        'email',
-        'password',
-        'account_number',
-        'balance',
-        'city_id',
+        'name', 'cpf', 'phone', 'email', 'password', 'account_number', 'balance', 'city_id',
     ];
 
-    function city()
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    public function city()
     {
         return $this->belongsTo(City::class);
     }
 
-
-  
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }
