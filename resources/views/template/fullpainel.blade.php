@@ -10,6 +10,7 @@
 <a class="nav-link" href="{{route('company.get')}}">Companias</a>
 <a class="nav-link" href="{{route('transactions.get')}}">Transações</a>
 <a class="nav-link" href="{{ route('cities.get') }}">Cidades</a>
+<a class="nav-link" href="{{ route('status.get') }}">Status</a>
 @endsection
 
 @section('user')

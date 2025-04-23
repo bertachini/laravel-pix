@@ -9,6 +9,7 @@ use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\StatusController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -54,4 +55,10 @@ Route::controller(ClientController::class)->group(function () {
     Route::get('/clients', 'clients')->name('clients.get');
     Route::get('/clients/new', 'newClient')->name('clients.new');
     Route::post('/clients/new', 'saveClient')->name('clients.save');
+});
+
+Route::controller(StatusController::class)->group(function () {
+    Route::get('/status', 'getStatus')->name('status.get');
+    Route::get('/status/new', 'newStatus')->name('status.new');
+    Route::post('/status/new', 'saveStatus')->name('status.save');
 });
