@@ -25,6 +25,8 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            session(['user_id' => Auth::user()->id]);
+            session(['username' => Auth::user()->name]);
             return redirect()->route('dashboard')->with('success', 'Bem-vindo, ' . Auth::user()->name . '!');
         }
 
@@ -52,9 +54,17 @@ class AuthController extends Controller
         return redirect()->route('dashboard')->with('success', 'Cadastro realizado com sucesso, bem-vindo!');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+      
+   
         Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+
+
         return redirect()->route('login')->with('success', 'Logout realizado com sucesso!');
     }
 

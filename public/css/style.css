@@ -68,11 +68,12 @@ body {
     border: 3px solid #ff600d;
     border-radius: 50%;
 }
-.user:hover {
+.user .login,
+.user img:hover {
     transform: scale(0.9);
     transition: 100ms;
 }
-.user a {
+.user .login {
     text-decoration: none;
     color: #ff600d;
     font-size: 28px;
@@ -231,3 +232,36 @@ body {
 }
 
 /***/
+.Account{
+    display: flex;
+    flex-direction: column;
+    
+
+}
+
+ .box-account{
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    right: 15px;
+    top: 75px;
+    
+    position: absolute;
+}
+
+.box-account a {
+    font-size: 16px !important;
+    background-color: #141414;
+    color: #fff !important;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
