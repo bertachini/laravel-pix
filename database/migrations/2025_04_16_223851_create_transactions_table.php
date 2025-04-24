@@ -13,7 +13,7 @@ class CreateTransactionsTable extends Migration
             $table->uuid('partner_company_id');
             $table->decimal('amount', 10, 2);
             $table->uuid('transaction_status_id');
-            $table->uuid('client_id');
+            $table->unsignedBigInteger('client_id');
             $table->foreign('partner_company_id')->references('id')->on('partner_companies')->onDelete('restrict');
             $table->foreign('transaction_status_id')->references('id')->on('transaction_statuses')->onDelete('restrict');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('restrict');

@@ -11,7 +11,7 @@ class CreateCreditsTable extends Migration
             $table->uuid('id')->primary();
             $table->decimal('amount', 10, 2);
             $table->dateTime('date');
-            $table->uuid('client_id');
+            $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('restrict');
             $table->timestamps();
         });

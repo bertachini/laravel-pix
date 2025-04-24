@@ -10,10 +10,6 @@ class Client extends Authenticatable
 {
     use Notifiable;
 
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
     protected $fillable = [
         'id', 'name', 'cpf', 'phone', 'email', 'password', 'account_number', 'balance', 'city_id',
     ];
@@ -21,16 +17,6 @@ class Client extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            if (empty($model->id)) {
-                $model->id = (string) Str::uuid();
-            }
-        });
-    }
 
     public function city()
     {
