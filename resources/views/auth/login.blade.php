@@ -1,4 +1,4 @@
-@extends('template.main')
+@extends('template.fullpainel')
 @section('content')
 <div class="form-center">
     <form action="{{ route('process.login') }}" method="post" class="resgistro form-control form-control-sm p-3">

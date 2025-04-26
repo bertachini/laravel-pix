@@ -10,12 +10,16 @@
 
 @section('nav')
     @if (session('user_id'))
-    <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
-    <a class="nav-link" href="{{route('clients.get')}}">Clientes</a>
-    <a class="nav-link" href="{{route('company.get')}}">Companias</a>
-    <a class="nav-link" href="{{route('transactions.get')}}">Transações</a>
-    <a class="nav-link" href="{{ route('cities.get') }}">Cidades</a>
-    <a class="nav-link" href="{{ route('status.get') }}">Status</a>
+     @if (session('user_type') == 'admin')
+        <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+        <a class="nav-link" href="{{route('clients.get')}}">Clientes</a>
+        <a class="nav-link" href="{{route('company.get')}}">Companias</a>
+        <a class="nav-link" href="{{route('transactions.get')}}">Transações</a>
+        <a class="nav-link" href="{{ route('cities.get') }}">Cidades</a>
+        <a class="nav-link" href="{{ route('status.get') }}">Status</a>
+     @elseif (session('user_type') == 'user')
+        <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+     @endif
     @endif
 @endsection
 

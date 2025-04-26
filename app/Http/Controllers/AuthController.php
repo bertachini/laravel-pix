@@ -27,6 +27,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             session(['user_id' => Auth::user()->id]);
             session(['username' => Auth::user()->name]);
+            session(['user_type' => 'admin']);
             return redirect()->route('dashboard')->with('success', 'Bem-vindo, ' . Auth::user()->name . '!');
         }
 

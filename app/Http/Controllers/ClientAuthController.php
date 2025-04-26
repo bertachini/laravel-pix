@@ -21,7 +21,9 @@ class ClientAuthController extends Controller
 
         if (Auth::guard('clients')->attempt($credentials)) {
             $request->session()->regenerate();
-
+            session(['user_id' => Auth::user()->id]);
+            session(['username' => Auth::user()->name]);
+            session(['user_type' => 'user']);
             return redirect()->intended('/client/dashboard')->with('success', 'Logged in successfully.');
         }
 
