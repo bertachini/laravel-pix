@@ -42,6 +42,12 @@ class AuthController extends Controller
 
     public function processRegister(RegisterRequest $request)
     {
+
+        $validate = User::where('email', $request->email)->first();
+        if ($validate) {
+            return back()->with('error', 'Email já cadastrado');
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
