@@ -9,8 +9,6 @@ use Illuminate\Support\Str;
 
 class ClientController extends Controller
 {
-    //
-
     public function clients()
     {
         $clients = Client::all();
@@ -42,6 +40,40 @@ class ClientController extends Controller
             'city_id' => $request->city_id,
         ]);
 
-        return redirect()->route('clients.get')->with('success', 'Client created successfully.');
+        return redirect()->route('clients.get')->with('success', 'Cliente cadastrado com sucesso');
+    }
+
+    public function editClient($id)
+    {
+        $client = Client::findOrFail($id);
+        $cities = City::all();
+
+        return view('clients.edit', [
+            'client' => $client,
+            'cities' => $cities,
+        ]);
+    }
+
+    public function updateClient(ClientRequest $request, $id)
+    {
+        $client = Client::findOrFail($id);
+        $client->update([
+            'name' => $request->name,
+            'cpf' => $request->cpf,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'city_id' => $request->city_id,
+            'password' => $request->password ? bcrypt($request->password) : $client->password,
+        ]);
+
+        return redirect()->route('clients.get')->with('success', 'Cliente atualizado com sucesso');
+    }
+
+    public function destroyClient($id)
+    {
+        $client = Client::findOrFail($id);
+        $client->delete();
+
+        return redirect()->route('clients.get')->with('success', 'Cliente excluído com sucesso');
     }
 }

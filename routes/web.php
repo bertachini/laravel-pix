@@ -45,10 +45,14 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/transactions/reject/{id}', 'rejectTransiction')->name('transactions.reject');
     });
 
-    Route::controller(CompanyController::class)->group(function () {
+    Route::controller(CompanyController::class)->middleware('admin')->group(function () {
+        Route::get('/company', 'getPartnerCompany')->name('company.get');
         Route::get('/company/new', 'newPartnerCompany')->name('company.new');
         Route::post('/company/new', 'savePartnerCompany')->name('company.save');
-        Route::get('/company', 'getPartnerCompany')->name('company.get');
+        Route::get('/company/{id}/edit', 'editPartnerCompany')->name('company.edit');
+        Route::patch('/company/{id}', 'updatePartnerCompany')->name('company.update');
+        Route::post('/company/{id}/toggle', 'togglePartnerCompany')->name('company.toggle');
+        Route::delete('/company/{id}', 'deletePartnerCompany')->name('company.delete');
     });
 
     Route::controller(CityController::class)->group(function () {
@@ -61,6 +65,9 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/clients', 'clients')->name('clients.get');
         Route::get('/clients/new', 'newClient')->name('clients.new');
         Route::post('/clients/new', 'saveClient')->name('clients.save');
+        Route::get('/clients/{id}/edit', 'editClient')->name('clients.edit');
+        Route::patch('/clients/{id}', 'updateClient')->name('clients.update');
+        Route::delete('/clients/{id}', 'destroyClient')->name('clients.destroy');
     });
 
     Route::controller(StatusController::class)->group(function () {

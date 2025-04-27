@@ -3,35 +3,42 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ClientRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required|string|max:255',
-            'cpf' => 'required|string|max:14',
+            'cpf' => ['required', 'string', 'max:14'],
             'phone' => 'required|string|max:15',
-            'email' => 'required|string|email|max:255|unique:clients',
-            'password' => 'required|string|min:8',
-            'city_id' => 'required',
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'city_id' => 'required|exists:cities,id',
         ];
+
+        // For updates (PATCH requests), make password optional and adjust unique rules
+        if ($this->isMethod('PATCH')) {
+            $clientId = $this->route('id');
+            $rules['password'] = 'nullable|string|min:8';
+            $rules['email'][] = Rule::unique('clients')->ignore($clientId);
+            $rules['cpf'][] = Rule::unique('clients')->ignore($clientId);
+        } else {
+            // For creates (POST requests), password is required and unique rules apply without ignore
+            $rules['password'] = 'required|string|min:8';
+            $rules['email'][] = 'unique:clients';
+            $rules['cpf'][] = 'unique:clients';
+        }
+
+        return $rules;
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.required' => 'O campo nome é obrigatório.',
@@ -40,6 +47,7 @@ class ClientRequest extends FormRequest
             'cpf.required' => 'O campo CPF é obrigatório.',
             'cpf.string' => 'O campo CPF deve ser uma string.',
             'cpf.max' => 'O campo CPF deve ter no máximo 14 caracteres.',
+            'cpf.unique' => 'O CPF já está em uso.',
             'phone.required' => 'O campo telefone é obrigatório.',
             'phone.string' => 'O campo telefone deve ser uma string.',
             'phone.max' => 'O campo telefone deve ter no máximo 15 caracteres.',
@@ -53,9 +61,6 @@ class ClientRequest extends FormRequest
             'password.min' => 'O campo senha deve ter no mínimo 8 caracteres.',
             'city_id.required' => 'O campo cidade é obrigatório.',
             'city_id.exists' => 'A cidade selecionada não é válida.',
-            'city_id.integer' => 'O campo cidade deve ser um número inteiro.',
-            'city_id.string' => 'O campo cidade deve ser uma string.',
-            'city_id.max' => 'O campo cidade deve ter no máximo 255 caracteres.',
         ];
     }
 }
