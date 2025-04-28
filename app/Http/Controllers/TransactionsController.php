@@ -2,94 +2,81 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\TransactionRequest;
 use App\Models\PartnerCompany;
 use App\Models\Client;
 use App\Models\Transaction;
 use App\Models\TransactionStatus;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class TransactionsController extends Controller
 {
-    //
-    
-    public function newTransiction()
+    public function newTransaction()
     {
-
-        $paternerCompanies = PartnerCompany::all();
+        $partnerCompanies = PartnerCompany::all();
         $clients = Client::all();
+        $transactionStatuses = TransactionStatus::all();
 
-        return view('transactions.new', [
-            'paternerCompanies' => $paternerCompanies,
-            'clients' => $clients
-        ]);
+        return view('transactions.new', compact('partnerCompanies', 'clients', 'transactionStatuses'));
     }
 
-    
-
-    public function saveTransiction(Request $req)
+    public function saveTransaction(TransactionRequest $request)
     {
-        $uudiPennding = TransactionStatus::where('name', 'pending')->firstOrFail();
-
-
         $transaction = Transaction::create([
             'date' => now(),
-            'partner_company_id' => $req->partner_company_id,
-            'client_id' => $req->client_id,
-            'amount' => $req->amount,
-            'transaction_status_id' => $uudiPennding->id
+            'partner_company_id' => $request->partner_company_id,
+            'client_id' => $request->client_id,
+            'amount' => $request->amount,
+            'transaction_status_id' => $request->transaction_status_id,
         ]);
-       
 
-        return redirect(route('transactions.get'))->with('success', 'Transação criada com sucesso!');
+        return redirect()->route('transactions.get')->with('success', 'Transação criada com sucesso!');
     }
 
-    public function getTransiction()
+    public function getTransaction()
     {
         $transactions = Transaction::all();
-
-        return view('transactions.index', [
-            'transactions' => $transactions
-        ]);
+        \Log::info('Transactions fetched: ' . $transactions->count());
+        return view('transactions.index', compact('transactions'));
     }
 
-    public function getTransictionById($id)
+    public function getTransactionById($id)
     {
-        $transaction = Transaction::where('partner_company_id', $id)->orWhere('client_id', $id)->get();
-        return view('transactions.index', [
-            'transactions' => $transaction
-        ]);
+        $transactions = Transaction::where('partner_company_id', $id)
+            ->orWhere('client_id', $id)
+            ->get();
+        return view('transactions.index', compact('transactions'));
     }
 
-    public function approveTransiction($id)
+    public function editTransaction($id)
     {
         $transaction = Transaction::findOrFail($id);
-        $recebedor = PartnerCompany::findOrFail($transaction->partner_company_id);
-        $pagador = Client::findOrFail($transaction->client_id);
+        $partnerCompanies = PartnerCompany::all();
+        $clients = Client::all();
+        $statuses = TransactionStatus::all();
 
-        if($pagador->balance < $transaction->amount){
-            return redirect(route('transactions.get'))->with('error', 'Saldo insuficiente para realizar a transação!');
-        }
-
-        $pagador->balance -= $transaction->amount;
-        $pagador->save();
-        $recebedor->balance += $transaction->amount;
-        $recebedor->save();
-        $transaction->transaction_status_id = TransactionStatus::where('name', 'approved')->first()->id;
-        $transaction->save();
-
-        return redirect(route('transactions.get'))->with('success', 'Transação aprovada com sucesso!');
+        return view('transactions.edit', compact('transaction', 'partnerCompanies', 'clients', 'statuses'));
     }
-    public function rejectTransiction($id)
+
+    public function updateTransaction(TransactionRequest $request, $id)
     {
-        $transaction = Transaction::updateOrCreate(
-            ['id' => $id],
-            ['transaction_status_id' => TransactionStatus::where('name', 'rejected')->first()->id]
-        );
+        $transaction = Transaction::findOrFail($id);
+        $transaction->update([
+            'date' => $request->date,
+            'partner_company_id' => $request->partner_company_id,
+            'client_id' => $request->client_id,
+            'amount' => $request->amount,
+            'transaction_status_id' => $request->transaction_status_id,
+        ]);
 
-        return redirect(route('transactions.get'))->with('success', 'Transação rejeitada com sucesso!');
+        return redirect()->route('transactions.get')->with('success', 'Transação atualizada com sucesso!');
     }
 
+    public function deleteTransaction($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+        $transaction->delete();
 
-
+        return redirect()->route('transactions.get')->with('success', 'Transação excluída com sucesso!');
+    }
 }

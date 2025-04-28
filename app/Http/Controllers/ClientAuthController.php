@@ -21,11 +21,14 @@ class ClientAuthController extends Controller
 
         if (Auth::guard('clients')->attempt($credentials)) {
             $request->session()->regenerate();
-            session(['user_id' => Auth::user()->id]);
-            session(['username' => Auth::user()->name]);
-            session(['user_type' => 'user']);
+            $client = Auth::guard('clients')->user();
+            session([
+                'user_id' => $client->id,
+                'username' => $client->name,
+                'user_type' => 'client',
+            ]);
             return redirect()->intended('/client/dashboard')->with('success', 'Logged in successfully.');
-        }
+}
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',

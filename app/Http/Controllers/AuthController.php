@@ -28,7 +28,7 @@ class AuthController extends Controller
             session(['user_id' => Auth::user()->id]);
             session(['username' => Auth::user()->name]);
             session(['user_type' => 'admin']);
-            return redirect()->route('dashboard')->with('success', 'Bem-vindo, ' . Auth::user()->name . '!');
+            return redirect()->route('clients.get')->with('success', 'Bem-vindo, ' . Auth::user()->name . '!');
         }
 
         return back()->with('error', 'Email ou senha inválidos');
@@ -63,8 +63,8 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-      
-   
+
+
         Auth::logout();
 
         $request->session()->invalidate();

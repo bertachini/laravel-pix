@@ -11,7 +11,6 @@
 @section('nav')
     @if (session('user_id'))
      @if (session('user_type') == 'admin')
-        <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
         <a class="nav-link" href="{{route('clients.get')}}">Clientes</a>
         <a class="nav-link" href="{{route('company.get')}}">Companias</a>
         <a class="nav-link" href="{{route('transactions.get')}}">Transações</a>
@@ -80,9 +79,9 @@
             }
         })
     });
-    
 
-       
+
+
 </script>
 @endpush
 

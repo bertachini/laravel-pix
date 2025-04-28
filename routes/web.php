@@ -10,7 +10,7 @@ use App\Http\Controllers\ClientAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('dashboard');
+    return redirect()->route('clients.get');
 })->name('index')->middleware('auth');
 
 Route::controller(AuthController::class)->group(function () {
@@ -33,12 +33,13 @@ Route::get('/client/dashboard', [ClientController::class, 'dashboard'])
 
 Route::middleware(['admin'])->group(function () {
     Route::controller(TransactionsController::class)->group(function () {
-        Route::get('/transactions/new', 'newTransiction')->name('transactions.new');
-        Route::post('/transactions/new', 'saveTransiction')->name('transactions.save');
-        Route::get('/transactions', 'getTransiction')->name('transactions.get');
-        Route::get('/transactions/{id}', 'getTransictionById')->name('transactions.getById');
-        Route::get('/transactions/approve/{id}', 'approveTransiction')->name('transactions.approve');
-        Route::get('/transactions/reject/{id}', 'rejectTransiction')->name('transactions.reject');
+        Route::get('/transactions', 'getTransaction')->name('transactions.get');
+        Route::get('/transactions/new', 'newTransaction')->name('transactions.new');
+        Route::post('/transactions/new', 'saveTransaction')->name('transactions.save');
+        Route::get('/transactions/{id}', 'getTransactionById')->name('transactions.getById');
+        Route::get('/transactions/{id}/edit', 'editTransaction')->name('transactions.edit');
+        Route::patch('/transactions/{id}', 'updateTransaction')->name('transactions.update');
+        Route::delete('/transactions/{id}', 'deleteTransaction')->name('transactions.delete');
     });
 
     Route::controller(CompanyController::class)->middleware('admin')->group(function () {
@@ -53,7 +54,10 @@ Route::middleware(['admin'])->group(function () {
     Route::controller(CityController::class)->group(function () {
         Route::get('/cities', 'index')->name('cities.get');
         Route::get('/cities/new', 'newCity')->name('cities.new');
-        Route::post('/cities/new', 'saveCity')->name('cities.save');
+        Route::post('/cities', 'saveCity')->name('cities.save');
+        Route::get('/cities/{id}/edit', 'editCity')->name('cities.edit');
+        Route::put('/cities/{id}', 'updateCity')->name('cities.update');
+        Route::delete('/cities/{id}', 'deleteCity')->name('cities.delete');
     });
 
     Route::controller(ClientController::class)->group(function () {

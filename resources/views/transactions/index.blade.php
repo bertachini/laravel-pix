@@ -7,45 +7,48 @@
 @section('content')
 <div class="container">
     <div class="row mt-3">
-      <a href="{{ route('transactions.new') }}" class="btn btn-primary">Nova Transação</a>
+        <a href="{{ route('transactions.new') }}" class="btn btn-primary">Nova Transação</a>
     </div>
     <div class="row mt-3">
-      @foreach ($transactions as $transaction)
-        <div class="transacao-card">
-          <div class="transacao-info">
-              <span class="label">ID de Transação</span><br />
-              <span class="valor">{{$transaction->id}}</span>
-          </div>
-          <div class="card-secondary pagador">
-              <span class="label">Pagador</span><br />
-              <span class="valor">{{ $transaction->client->name }}</span>
-          </div>
-          <div class="card-secondary recebedor">
-              <span class="label">Recebedor</span><br />
-              <span class="valor">{{ $transaction->company->company_name }}</span>
-          </div>
-          <div class="card-secondary amount">
-              <span class="label">Valor</span><br />
-              <span class="valor">R$ {{ $transaction->amount }}</span>
-          </div>
-          <div class="card-status">
-              @if ($transaction->transactionStatus->name == 'pending')
-              <span class="status status-pending">Pendente</span>
-              @elseif ($transaction->transactionStatus->name == 'approved')
-              <span class="status status-approved">Aprovada</span>
-              @elseif ($transaction->transactionStatus->name == 'rejected')
-              <span class="status status-rejected">Rejeitada</span>
-              @endif
-          </div>
-          <div class="transacao-acoes">
-              @if ($transaction->transactionStatus->name == 'pending')
-              <a class="btn-aprovar fa-solid fa-file-circle-check" href="{{ route('transactions.approve', $transaction->id) }}"></a>
-              <a class="btn-reprovar fa-solid fa-file-circle-xmark" href="{{ route('transactions.reject', $transaction->id) }}"></a>
-              @endif
-          </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Empresa Parceira</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($transactions as $transaction)
+                        <tr>
+                            <td>{{ Str::limit($transaction->id, 8) }}</td>
+                            <td>{{ $transaction->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $transaction->company->company_name }}</td>
+                            <td>{{ $transaction->client->name }}</td>
+                            <td>{{ number_format($transaction->amount, 2, ',', '.') }}</td>
+                            <td> {{$transaction->transactionStatus->name}} </td>
+                            <td>
+                                <a href="{{ route('transactions.edit', $transaction->id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                <form action="{{ route('transactions.delete', $transaction->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir?')"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center">Nenhuma transação cadastrada.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
-      @endforeach
     </div>
-  </div>
-
+</div>
 @endsection

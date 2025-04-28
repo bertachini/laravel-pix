@@ -1,17 +1,18 @@
 @extends('template.fullpainel')
 
 @section('title')
-    <title>Nova Cidade</title>
+    <title>Editar Cidade</title>
 @endsection
 
 @section('content')
 <div class="form-center">
-    <form action="{{ route('cities.save') }}" method="POST" class="transaction-form form-control form-control-sm p-3">
+    <form action="{{ route('cities.update', $city->id) }}" method="POST" class="transaction-form form-control form-control-sm p-3">
         @csrf
+        @method('PUT')
         <div class="text-center mb-1 mt-3">
             <img src="{{ asset('img/icon/cities.png') }}" alt="Logo" class="logo">
         </div>
-        <h4 class="text-center">Registrar Cidade</h4>
+        <h4 class="text-center">Editar Cidade</h4>
         <div class="mb-3">
             <label for="country" class="form-label">País</label>
             <select class="form-select @error('country') is-invalid @enderror" id="country" name="country" required></select>
@@ -33,7 +34,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-        <input type="submit" class="btn btn-success mt-4 form-control" value="Cadastrar">
+        <input type="submit" class="btn btn-success mt-4 form-control" value="Atualizar">
     </form>
 </div>
 @endsection
@@ -45,6 +46,10 @@
     const stateSelect = document.getElementById('state');
     const citySelect = document.getElementById('city');
     let allCountries = [];
+
+    const selectedCountry = @json($city->country);
+    const selectedState = @json($city->state);
+    const selectedCity = @json($city->name);
 
     function loadCities(countryName, stateName) {
         fetch(`${baseURL}countries/state/cities`, {
@@ -66,6 +71,9 @@
                 const option = document.createElement('option');
                 option.value = city;
                 option.textContent = city;
+                if (city === selectedCity) {
+                    option.selected = true;
+                }
                 citySelect.appendChild(option);
             });
         })
@@ -91,7 +99,7 @@
             const option = document.createElement('option');
             option.value = country.name;
             option.textContent = country.name;
-            if (country.name === 'Brazil') {
+            if (country.name === selectedCountry) {
                 option.selected = true;
             }
             countrySelect.appendChild(option);
@@ -105,8 +113,8 @@
     });
 
     countrySelect.addEventListener('change', () => {
-        const selectedCountry = countrySelect.value;
-        const countryData = allCountries.find(c => c.name === selectedCountry);
+        const selectedCountryValue = countrySelect.value;
+        const countryData = allCountries.find(c => c.name === selectedCountryValue);
         stateSelect.innerHTML = '<option value="">Selecione o estado</option>';
         citySelect.innerHTML = '<option value="">Selecione a cidade</option>';
 
@@ -115,21 +123,23 @@
                 const option = document.createElement('option');
                 option.value = state.name;
                 option.textContent = state.name;
+                if (state.name === selectedState && selectedCountryValue === selectedCountry) {
+                    option.selected = true;
+                }
                 stateSelect.appendChild(option);
             });
 
             if (countryData.states.length > 0) {
-                stateSelect.value = countryData.states[0].name;
-                loadCities(selectedCountry, stateSelect.value);
+                stateSelect.dispatchEvent(new Event('change'));
             }
         }
     });
 
     stateSelect.addEventListener('change', () => {
-        const selectedCountry = countrySelect.value;
-        const selectedState = stateSelect.value;
-        if (selectedCountry && selectedState) {
-            loadCities(selectedCountry, selectedState);
+        const selectedCountryValue = countrySelect.value;
+        const selectedStateValue = stateSelect.value;
+        if (selectedCountryValue && selectedStateValue) {
+            loadCities(selectedCountryValue, selectedStateValue);
         }
     });
 </script>
