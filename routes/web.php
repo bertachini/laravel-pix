@@ -32,10 +32,6 @@ Route::get('/client/dashboard', [ClientController::class, 'dashboard'])
     ->middleware('auth:clients');
 
 Route::middleware(['admin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
     Route::controller(TransactionsController::class)->group(function () {
         Route::get('/transactions/new', 'newTransiction')->name('transactions.new');
         Route::post('/transactions/new', 'saveTransiction')->name('transactions.save');
@@ -51,7 +47,6 @@ Route::middleware(['admin'])->group(function () {
         Route::post('/company/new', 'savePartnerCompany')->name('company.save');
         Route::get('/company/{id}/edit', 'editPartnerCompany')->name('company.edit');
         Route::patch('/company/{id}', 'updatePartnerCompany')->name('company.update');
-        Route::post('/company/{id}/toggle', 'togglePartnerCompany')->name('company.toggle');
         Route::delete('/company/{id}', 'deletePartnerCompany')->name('company.delete');
     });
 
@@ -74,5 +69,8 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/status', 'getStatus')->name('status.get');
         Route::get('/status/new', 'newStatus')->name('status.new');
         Route::post('/status/new', 'saveStatus')->name('status.save');
+        Route::get('/status/{id}/edit', 'editStatus')->name('status.edit'); // Added
+        Route::patch('/status/{id}', 'updateStatus')->name('status.update'); // Added
+        Route::delete('/status/{id}', 'deleteStatus')->name('status.delete'); // Added
     });
 });
