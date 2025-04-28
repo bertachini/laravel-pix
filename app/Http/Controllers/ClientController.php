@@ -64,6 +64,7 @@ class ClientController extends Controller
             'email' => $request->email,
             'city_id' => $request->city_id,
             'password' => $request->password ? bcrypt($request->password) : $client->password,
+            'balance' => $request->balance ?? $client->balance,
         ]);
 
         return redirect()->route('clients.get')->with('success', 'Cliente atualizado com sucesso');

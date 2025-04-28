@@ -21,9 +21,10 @@ class ClientRequest extends FormRequest
                 'string',
                 $this->cpfValidator(),
             ],
-            'phone' => 'required|string|in:10,11',
+            'phone' => 'required|string|regex:/^[0-9]{10,11}$/',
             'email' => ['required', 'string', 'email', 'max:255'],
             'city_id' => 'required|exists:cities,id',
+            'balance' => 'nullable|numeric|min:0',
         ];
 
         if ($this->isMethod('PATCH')) {
@@ -53,7 +54,7 @@ class ClientRequest extends FormRequest
             'phone.required' => 'O campo telefone é obrigatório.',
             'phone.string' => 'O campo telefone deve ser uma string.',
             'phone.max' => 'O campo telefone deve ter no máximo 15 caracteres.',
-            'phone.in' => 'O telefone deve conter 10 ou 11 dígitos.',
+            'phone.regex' => 'O telefone deve conter 10 ou 11 dígitos.',
             'email.required' => 'O campo e-mail é obrigatório.',
             'email.string' => 'O campo e-mail deve ser uma string.',
             'email.email' => 'O campo e-mail deve ser um endereço de e-mail válido.',

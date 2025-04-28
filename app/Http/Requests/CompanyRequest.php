@@ -22,7 +22,7 @@ class CompanyRequest extends FormRequest
                 'unique:partner_companies,cnpj',
                 $this->cnpjValidator(),
             ],
-            'phone' => 'required|string|in:10,11',
+            'phone' => 'required|string|regex:/^[0-9]{10,11}$/',
             'email' => [
                 'required',
                 'email',
@@ -55,7 +55,7 @@ class CompanyRequest extends FormRequest
 
             'phone.required' => 'O telefone é obrigatório.',
             'phone.string' => 'O telefone deve ser uma string.',
-            'phone.in' => 'O telefone deve conter 10 ou 11 dígitos.',
+            'phone.regex' => 'O telefone deve conter 10 ou 11 dígitos.',
             'email.required' => 'O e-mail é obrigatório.',
             'email.email' => 'O e-mail deve ser um endereço de e-mail válido.',
             'email.max' => 'O e-mail deve ter no máximo 255 caracteres.',
