@@ -1,7 +1,7 @@
 @extends('template.fullpainel')
 
 @section('title')
-<title>Dashboard</title>
+<title>Clientes</title>
 @endsection
 
 @section('content')
@@ -26,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($clients as $client)
+                    @forelse ($clients as $client)
                     <tr>
                         <td>{{ $client->id }}</td>
                         <td>{{ $client->name }}</td>
@@ -45,7 +45,11 @@
                             </form>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="9" class="text-center">Nenhum cliente cadastrado.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

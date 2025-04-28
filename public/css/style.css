@@ -235,7 +235,7 @@ body {
 .Account{
     display: flex;
     flex-direction: column;
-    
+
 
 }
 
@@ -251,7 +251,7 @@ body {
     align-items: center;
     right: 15px;
     top: 75px;
-    
+
     position: absolute;
 }
 
@@ -264,4 +264,27 @@ body {
     border-radius: 5px;
     cursor: pointer;
 
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: #ffd100; /* Match your theme */
+    cursor: pointer;
+    text-decoration: none;
+    padding: 0;
+    font-size: 1rem;
+}
+
+.logout-btn:hover {
+    text-decoration: underline;
+}
+
+.box-account {
+    display: none;
+    flex-direction: column;
+    background: #212529; /* Match your theme */
+    position: absolute;
+    padding: 10px;
+    border-radius: 5px;
 }

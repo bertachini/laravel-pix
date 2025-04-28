@@ -1,7 +1,7 @@
 @extends('template.fullpainel')
 
 @section('title')
-<title>Dashboard</title>
+<title>Status</title>
 @endsection
 
 @section('content')

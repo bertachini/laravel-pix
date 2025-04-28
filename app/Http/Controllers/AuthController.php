@@ -58,7 +58,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('dashboard')->with('success', 'Cadastro realizado com sucesso, bem-vindo!');
+        return redirect()->route('clients.get')->with('success', 'Cadastro realizado com sucesso, bem-vindo!');
     }
 
     public function logout(Request $request)
