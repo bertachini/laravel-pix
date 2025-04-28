@@ -27,11 +27,11 @@ class ClientAuthController extends Controller
                 'username' => $client->name,
                 'user_type' => 'client',
             ]);
-            return redirect()->intended('/client/dashboard')->with('success', 'Logged in successfully.');
+            return redirect()->intended('/client/dashboard')->with('success', 'Bem-vindo, ' . $client->name . '!');
 }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'As credenciais fornecidas estão incorretas.',
         ])->onlyInput('email');
     }
 

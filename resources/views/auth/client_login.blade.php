@@ -15,6 +15,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
         <input type="submit" class="btn btn-success mt-4 form-control" value="Entrar">
+        <a class="btn btn-primary mt-2 form-control" href="{{ route('process.login') }}">Login como Administrador</a>
     </form>
 </div>
 @endsection

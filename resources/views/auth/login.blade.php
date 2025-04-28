@@ -16,6 +16,7 @@
         @enderror
         <input type="submit" class="btn btn-success mt-4 form-control" value="Entrar">
         <a class="btn btn-info mt-2 form-control" href="{{ route('register') }}">Cadastrar</a>
+        <a class="btn btn-primary mt-2 form-control" href="{{ route('client.login') }}">Login como Cliente</a>
     </form>
 </div>
 @endsection

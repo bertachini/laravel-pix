@@ -18,7 +18,6 @@ class Transaction extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        
         'date',
         'partner_company_id',
         'client_id',
@@ -26,14 +25,14 @@ class Transaction extends Model
         'transaction_status_id'
     ];
 
-    function company()
+    function partnerCompany()
     {
         return $this->belongsTo(PartnerCompany::class , 'partner_company_id');
     }
-    
+
     function transactionStatus()
     {
-        return $this->belongsTo(TransactionStatus::class);
+        return $this->belongsTo(TransactionStatus::class, 'transaction_status_id');
     }
 
 

@@ -14,6 +14,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/client/login')->with('error', 'Access denied. Admins only.');
+        return redirect()->route('login')->with('error', 'Acesso negado. Somente administradores.');
     }
 }

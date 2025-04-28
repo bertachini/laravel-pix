@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionRequest;
+use Illuminate\Support\Facades\DB;
 use App\Models\PartnerCompany;
 use App\Models\Client;
 use App\Models\Transaction;
@@ -22,15 +23,29 @@ class TransactionsController extends Controller
 
     public function saveTransaction(TransactionRequest $request)
     {
-        $transaction = Transaction::create([
-            'date' => now(),
-            'partner_company_id' => $request->partner_company_id,
-            'client_id' => $request->client_id,
-            'amount' => $request->amount,
-            'transaction_status_id' => $request->transaction_status_id,
-        ]);
+        try {
+            DB::transaction(function () use ($request) {
+                $client = Client::findOrFail($request->client_id);
+                if ($client->balance < $request->amount) {
+                    throw new \Exception('Saldo insuficiente para realizar a transação.');
+                }
 
-        return redirect()->route('transactions.get')->with('success', 'Transação criada com sucesso!');
+                $client->balance -= $request->amount;
+                $client->save();
+
+                Transaction::create([
+                    'date' => now(),
+                    'partner_company_id' => $request->partner_company_id,
+                    'client_id' => $request->client_id,
+                    'amount' => $request->amount,
+                    'transaction_status_id' => $request->transaction_status_id,
+                ]);
+            });
+
+            return redirect()->route('transactions.get')->with('success', 'Transação criada com sucesso!');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
     public function getTransaction()
@@ -60,23 +75,50 @@ class TransactionsController extends Controller
 
     public function updateTransaction(TransactionRequest $request, $id)
     {
-        $transaction = Transaction::findOrFail($id);
-        $transaction->update([
-            'date' => $request->date,
-            'partner_company_id' => $request->partner_company_id,
-            'client_id' => $request->client_id,
-            'amount' => $request->amount,
-            'transaction_status_id' => $request->transaction_status_id,
-        ]);
+        try {
+            DB::transaction(function () use ($request, $id) {
+                $transaction = Transaction::findOrFail($id);
+                $client = Client::findOrFail($request->client_id);
 
-        return redirect()->route('transactions.get')->with('success', 'Transação atualizada com sucesso!');
+                $client->balance += $transaction->amount;
+
+                if ($client->balance < $request->amount) {
+                    throw new \Exception('Saldo insuficiente para atualizar a transação.');
+                }
+
+                $client->balance -= $request->amount;
+                $client->save();
+
+                $transaction->update([
+                    'date' => $request->date,
+                    'partner_company_id' => $request->partner_company_id,
+                    'client_id' => $request->client_id,
+                    'amount' => $request->amount,
+                    'transaction_status_id' => $request->transaction_status_id,
+                ]);
+            });
+
+            return redirect()->route('transactions.get')->with('success', 'Transação atualizada com sucesso!');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
     public function deleteTransaction($id)
     {
-        $transaction = Transaction::findOrFail($id);
-        $transaction->delete();
+        try {
+            DB::transaction(function () use ($id) {
+                $transaction = Transaction::findOrFail($id);
+                $client = Client::findOrFail($transaction->client_id);
 
-        return redirect()->route('transactions.get')->with('success', 'Transação excluída com sucesso!');
-    }
-}
+                $client->balance += $transaction->amount;
+                $client->save();
+
+                $transaction->delete();
+            });
+
+            return redirect()->route('transactions.get')->with('success', 'Transação excluída com sucesso!');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }}

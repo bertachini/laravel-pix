@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClientRequest;
 use App\Models\City;
 use App\Models\Client;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Transaction;
 use Illuminate\Support\Str;
 
 class ClientController extends Controller
@@ -77,4 +79,14 @@ class ClientController extends Controller
 
         return redirect()->route('clients.get')->with('success', 'Cliente excluído com sucesso');
     }
-}
+
+    public function dashboard()
+    {
+        $client = Auth::guard('clients')->user();
+        $transactions = Transaction::where('client_id', $client->id)
+            ->with(['partnerCompany', 'transactionStatus'])
+            ->orderBy('date', 'desc')
+            ->get();
+
+        return view('clients.dashboard', compact('client', 'transactions'));
+    }}

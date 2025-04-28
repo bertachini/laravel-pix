@@ -27,9 +27,9 @@ Route::controller(ClientAuthController::class)->group(function () {
     Route::post('client/logout', 'logout')->name('client.logout')->middleware('auth:clients');
 });
 
-Route::get('/client/dashboard', [ClientController::class, 'dashboard'])
-    ->name('client.dashboard')
-    ->middleware('auth:clients');
+Route::middleware('auth:clients')->group(function () {
+    Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('client.dashboard');
+});
 
 Route::middleware(['admin'])->group(function () {
     Route::controller(TransactionsController::class)->group(function () {

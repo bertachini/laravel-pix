@@ -28,7 +28,7 @@
                         <tr>
                             <td>{{ Str::limit($transaction->id, 8) }}</td>
                             <td>{{ $transaction->created_at->format('d/m/Y H:i') }}</td>
-                            <td>{{ $transaction->company->company_name }}</td>
+                            <td>{{ $transaction->partnerCompany->company_name }}</td>
                             <td>{{ $transaction->client->name }}</td>
                             <td>{{ number_format($transaction->amount, 2, ',', '.') }}</td>
                             <td> {{$transaction->transactionStatus->name}} </td>

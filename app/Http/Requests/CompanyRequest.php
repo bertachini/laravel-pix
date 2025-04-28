@@ -33,7 +33,7 @@ class CompanyRequest extends FormRequest
 
         if ($this->isMethod('PATCH')) {
             $companyId = $this->route('id');
-            $rules['cnpj'][3] = Rule::unique('partner_companies', 'cnpj')->ignore($companyId);
+            $rules['cnpj'][2] = Rule::unique('partner_companies', 'cnpj')->ignore($companyId);
             $rules['email'][3] = Rule::unique('partner_companies', 'email')->ignore($companyId);
         }
 
