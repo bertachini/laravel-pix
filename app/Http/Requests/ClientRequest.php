@@ -16,20 +16,22 @@ class ClientRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|string|max:255',
-            'cpf' => ['required', 'string', 'max:14'],
-            'phone' => 'required|string|max:15',
+            'cpf' => [
+                'required',
+                'string',
+                $this->cpfValidator(),
+            ],
+            'phone' => 'required|string|in:10,11',
             'email' => ['required', 'string', 'email', 'max:255'],
             'city_id' => 'required|exists:cities,id',
         ];
 
-        // For updates (PATCH requests), make password optional and adjust unique rules
         if ($this->isMethod('PATCH')) {
             $clientId = $this->route('id');
             $rules['password'] = 'nullable|string|min:8';
             $rules['email'][] = Rule::unique('clients')->ignore($clientId);
             $rules['cpf'][] = Rule::unique('clients')->ignore($clientId);
         } else {
-            // For creates (POST requests), password is required and unique rules apply without ignore
             $rules['password'] = 'required|string|min:8';
             $rules['email'][] = 'unique:clients';
             $rules['cpf'][] = 'unique:clients';
@@ -51,6 +53,7 @@ class ClientRequest extends FormRequest
             'phone.required' => 'O campo telefone é obrigatório.',
             'phone.string' => 'O campo telefone deve ser uma string.',
             'phone.max' => 'O campo telefone deve ter no máximo 15 caracteres.',
+            'phone.in' => 'O telefone deve conter 10 ou 11 dígitos.',
             'email.required' => 'O campo e-mail é obrigatório.',
             'email.string' => 'O campo e-mail deve ser uma string.',
             'email.email' => 'O campo e-mail deve ser um endereço de e-mail válido.',
@@ -62,5 +65,50 @@ class ClientRequest extends FormRequest
             'city_id.required' => 'O campo cidade é obrigatório.',
             'city_id.exists' => 'A cidade selecionada não é válida.',
         ];
+    }
+
+    protected function cpfValidator()
+    {
+        return function ($attribute, $value, $fail) {
+            $cpf = preg_replace('/\D/', '', $value);
+
+            if (strlen($cpf) !== 11) {
+                $fail('O CPF deve conter exatamente 11 dígitos.');
+
+                return;
+            }
+
+            if (preg_match('/(\d)\1{10}/', $cpf)) {
+                $fail('O CPF é inválido.');
+
+                return;
+            }
+
+            $sum = 0;
+            for ($i = 0; $i < 9; $i++) {
+                $sum += $cpf[$i] * (10 - $i);
+            }
+            $remainder = $sum % 11;
+            $digit1 = ($remainder < 2) ? 0 : 11 - $remainder;
+
+            if ($cpf[9] != $digit1) {
+                $fail('O CPF é inválido.');
+
+                return;
+            }
+
+            $sum = 0;
+            for ($i = 0; $i < 10; $i++) {
+                $sum += $cpf[$i] * (11 - $i);
+            }
+            $remainder = $sum % 11;
+            $digit2 = ($remainder < 2) ? 0 : 11 - $remainder;
+
+            if ($cpf[10] != $digit2) {
+                $fail('O CPF é inválido.');
+
+                return;
+            }
+        };
     }
 }

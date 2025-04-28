@@ -41,6 +41,7 @@ class CompanyController extends Controller
         $company = PartnerCompany::findOrFail($id);
         return view('company.edit', compact('company'));
     }
+
     public function updatePartnerCompany(CompanyRequest $request, $id)
     {
         $company = PartnerCompany::findOrFail($id);

@@ -8,7 +8,6 @@ use App\Traits\HasUuid;
 
 class PartnerCompany extends Model
 {
-    //
     use HasFactory, HasUuid;
     public $incrementing = false;
     protected $keyType = 'string';
@@ -21,7 +20,4 @@ class PartnerCompany extends Model
         'access_token',
         'balance',
     ];
-
-    
-
 }

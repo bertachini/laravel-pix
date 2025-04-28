@@ -3,8 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rule;
 
 class CompanyRequest extends FormRequest
 {
@@ -15,40 +14,99 @@ class CompanyRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $rules = [
             'company_name' => 'required|string|max:255',
-            'cnpj' => 'required|string|max:14',
-            'phone' => 'required|string|max:15',
-            'email' => 'required|email|max:255',
+            'cnpj' => [
+                'required',
+                'string',
+                'unique:partner_companies,cnpj',
+                $this->cnpjValidator(),
+            ],
+            'phone' => 'required|string|in:10,11',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:partner_companies,email',
+            ],
         ];
+
+        if ($this->isMethod('PATCH')) {
+            $companyId = $this->route('id');
+            $rules['cnpj'][3] = Rule::unique('partner_companies', 'cnpj')->ignore($companyId);
+            $rules['email'][3] = Rule::unique('partner_companies', 'email')->ignore($companyId);
+        }
+
+        return $rules;
     }
+
     public function messages(): array
     {
         return [
             'company_name.required' => 'O nome da empresa é obrigatório.',
+            'company_name.string' => 'O nome da empresa deve ser uma string.',
+            'company_name.max' => 'O nome da empresa deve ter no máximo 255 caracteres.',
+
             'cnpj.required' => 'O CNPJ é obrigatório.',
+            'cnpj.string' => 'O CNPJ deve ser uma string.',
+            'cnpj.size' => 'O CNPJ deve conter exatamente 14 dígitos.',
+            'cnpj.cnpj_validator' => 'O CNPJ é inválido.',
+            'cnpj.unique' => 'O CNPJ já está em uso.',
+
             'phone.required' => 'O telefone é obrigatório.',
-            'email.required' => 'O email é obrigatório.',
+            'phone.string' => 'O telefone deve ser uma string.',
+            'phone.in' => 'O telefone deve conter 10 ou 11 dígitos.',
+            'email.required' => 'O e-mail é obrigatório.',
+            'email.email' => 'O e-mail deve ser um endereço de e-mail válido.',
+            'email.max' => 'O e-mail deve ter no máximo 255 caracteres.',
+            'email.unique' => 'O e-mail já está em uso.',
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    protected function cnpjValidator()
     {
-        $notify = collect($validator->errors()->all())
-            ->map(fn($msg) => [
-                'type' => 'warning',
-                'message' => $msg
-            ])
-            ->all();
+        return function ($attribute, $value, $fail) {
+            $cnpj = preg_replace('/\D/', '', $value);
 
+            if (strlen($cnpj) !== 14) {
+                $fail('O CNPJ deve conter exatamente 14 dígitos.');
 
-        throw new HttpResponseException(
-            redirect()
-                ->back()
-                ->withInput()
-                ->withErrors($validator)
-                ->with('notify', $notify)
-        );
+                return;
+            }
+
+            if (preg_match('/(\d)\1{13}/', $cnpj)) {
+                $fail('O CNPJ é inválido.');
+
+                return;
+            }
+
+            $weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+            $sum = 0;
+            for ($i = 0; $i < 12; $i++) {
+                $sum += $cnpj[$i] * $weights1[$i];
+            }
+            $remainder = $sum % 11;
+            $digit1 = ($remainder < 2) ? 0 : 11 - $remainder;
+
+            if ($cnpj[12] != $digit1) {
+                $fail('O CNPJ é inválido.');
+
+                return;
+            }
+
+            $weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+            $sum = 0;
+            for ($i = 0; $i < 13; $i++) {
+                $sum += $cnpj[$i] * $weights2[$i];
+            }
+            $remainder = $sum % 11;
+            $digit2 = ($remainder < 2) ? 0 : 11 - $remainder;
+
+            if ($cnpj[13] != $digit2) {
+                $fail('O CNPJ é inválido.');
+
+                return;
+            }
+        };
     }
-
 }
